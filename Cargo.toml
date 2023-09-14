@@ -1,0 +1,23 @@
+[package]
+name = "bc-rand"
+version = "0.1.0"
+edition = "2021"
+description = "Blockchain Commons Random Number Utilities."
+authors = ["Blockchain Commons"]
+keywords = ["random", "testing", "security"]
+repository = "https://github.com/BlockchainCommons/bc-rand-rust"
+readme = "README.md"
+license = "BSD-2-Clause-Patent"
+categories = ["algorithms"]
+documentation = "https://docs.rs/bc-rand"
+
+[dependencies]
+rand = "0.8.5"
+getrandom = "0.2.9"
+rand_xoshiro = "0.6.0"
+num-traits = "0.2.15"
+lazy_static = "1.4.0"
+
+[dev-dependencies]
+hex-literal = "0.4.1"
+version-sync = "0.9"
