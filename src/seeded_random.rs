@@ -5,6 +5,7 @@ use rand_xoshiro::Xoshiro256StarStar;
 
 /// A random number generator that can be used as a source of deterministic pseudo-randomness
 /// for testing purposes.
+#[derive(Debug, Clone)]
 pub struct SeededRandomNumberGenerator {
     rng: Xoshiro256StarStar
 }

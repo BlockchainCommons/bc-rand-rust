@@ -7,7 +7,7 @@ use num_traits::{
 use crate::{magnitude::HasMagnitude, widening::Widening};
 
 /// A type that can generate random numbers.
-pub trait RandomNumberGenerator {
+pub trait RandomNumberGenerator: std::fmt::Debug {
     /// Returns the next random `u64`.
     fn next_u64(&mut self) -> u64;
 

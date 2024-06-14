@@ -60,6 +60,7 @@ pub fn next_u64() -> u64 {
 
 /// A random number generator that can be used as a source of cryptographically-strong
 /// randomness.
+#[derive(Debug, Clone)]
 pub struct SecureRandomNumberGenerator;
 
 impl RandomNumberGenerator for SecureRandomNumberGenerator {
