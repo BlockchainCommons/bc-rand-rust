@@ -1,5 +1,5 @@
 use std::sync::Once;
-use rand::{SeedableRng, rngs::StdRng, RngCore};
+use rand::{rngs::StdRng, CryptoRng, RngCore, SeedableRng};
 use getrandom::getrandom;
 
 use crate::RandomNumberGenerator;
@@ -63,17 +63,34 @@ pub fn next_u64() -> u64 {
 #[derive(Debug, Clone)]
 pub struct SecureRandomNumberGenerator;
 
-impl RandomNumberGenerator for SecureRandomNumberGenerator {
+impl RngCore for SecureRandomNumberGenerator {
+    fn next_u32(&mut self) -> u32 {
+        next_u64() as u32
+    }
+
     fn next_u64(&mut self) -> u64 {
         next_u64()
     }
 
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        fill_random_data(dest);
+    }
+
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand::Error> {
+        self.fill_bytes(dest);
+        Ok(())
+    }
+}
+
+impl CryptoRng for SecureRandomNumberGenerator {}
+
+impl RandomNumberGenerator for SecureRandomNumberGenerator {
     fn random_data(&mut self, size: usize) -> Vec<u8> {
         random_data(size)
     }
 
     fn fill_random_data(&mut self, data: &mut [u8]) {
-        fill_random_data(data)
+        fill_random_data(data);
     }
 }
 

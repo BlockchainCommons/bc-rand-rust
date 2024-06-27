@@ -1,5 +1,5 @@
 use crate::RandomNumberGenerator;
-use rand::RngCore;
+use rand::{CryptoRng, RngCore};
 use rand_xoshiro::rand_core::SeedableRng;
 use rand_xoshiro::Xoshiro256StarStar;
 
@@ -33,11 +33,31 @@ impl SeededRandomNumberGenerator {
     }
 }
 
-impl RandomNumberGenerator for SeededRandomNumberGenerator {
+impl RngCore for SeededRandomNumberGenerator {
+    fn next_u32(&mut self) -> u32 {
+        self.next_u64() as u32
+    }
+
     fn next_u64(&mut self) -> u64 {
         self.rng.next_u64()
     }
 
+    fn fill_bytes(&mut self, dest: &mut [u8]) {
+        self.rng.fill_bytes(dest);
+    }
+
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand::Error> {
+        self.rng.fill_bytes(dest);
+        Ok(())
+    }
+}
+
+// Note that we implement `CryptoRng` for `SeededRandomNumberGenerator` because it is required
+// by the some third-party crates, but this is NOT a cryptographically secure random number generator.
+// `SeededRandomNumberGenerator` should only be used for testing purposes.
+impl CryptoRng for SeededRandomNumberGenerator {}
+
+impl RandomNumberGenerator for SeededRandomNumberGenerator {
     fn random_data(&mut self, size: usize) -> Vec<u8> {
         // This might not be the most efficient implementation,
         // but it works the same as the Swift version.
@@ -61,7 +81,7 @@ pub fn fake_random_data(size: usize) -> Vec<u8> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{fake_random_data, SeededRandomNumberGenerator, RandomNumberGenerator};
+    use crate::{fake_random_data , rng_next_in_range, rng_next_with_upper_bound, RandomNumberGenerator, SeededRandomNumberGenerator};
 
     const TEST_SEED: [u64; 4] = [17295166580085024720, 422929670265678780, 5577237070365765850, 7953171132032326923];
 
@@ -86,13 +106,13 @@ mod tests {
     #[test]
     fn test_next_with_upper_bound() {
         let mut rng = SeededRandomNumberGenerator::new(TEST_SEED);
-        assert_eq!(rng.next_with_upper_bound(10000u32), 745);
+        assert_eq!(rng_next_with_upper_bound(&mut rng, 10000u32), 745);
     }
 
     #[test]
     fn test_in_range() {
         let mut rng = SeededRandomNumberGenerator::new(TEST_SEED);
-        let v = (0..100).map(|_| rng.next_in_range(&(0..100))).collect::<Vec<_>>();
+        let v = (0..100).map(|_| rng_next_in_range(&mut rng, &(0..100))).collect::<Vec<_>>();
         let expected_values: Vec<i32> = vec![7, 44, 92, 16, 16, 67, 41, 74, 66, 20, 18, 6, 62, 34, 4, 69, 99, 19, 0, 85, 22, 27, 56, 23, 19, 5, 23, 76, 80, 27, 74, 69, 17, 92, 31, 32, 55, 36, 49, 23, 53, 2, 46, 6, 43, 66, 34, 71, 64, 69, 25, 14, 17, 23, 32, 6, 23, 65, 35, 11, 21, 37, 58, 92, 98, 8, 38, 49, 7, 24, 24, 71, 37, 63, 91, 21, 11, 66, 52, 54, 55, 19, 76, 46, 89, 38, 91, 95, 33, 25, 4, 30, 66, 51, 5, 91, 62, 27, 92, 39];
         assert_eq!(v, expected_values);
     }

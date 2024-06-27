@@ -23,7 +23,14 @@ mod magnitude;
 mod widening;
 
 mod random_number_generator;
-pub use random_number_generator::RandomNumberGenerator;
+pub use random_number_generator::{
+    RandomNumberGenerator,
+    rng_next_with_upper_bound,
+    rng_next_in_range,
+    rng_next_in_closed_range,
+    rng_random_data,
+    rng_fill_random_data,
+};
 
 mod secure_random;
 pub use secure_random::{
