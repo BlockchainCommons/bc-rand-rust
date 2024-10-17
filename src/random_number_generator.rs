@@ -3,11 +3,11 @@ use num_traits::{
     cast::{AsPrimitive, FromPrimitive, NumCast},
     PrimInt, Unsigned, ops::overflowing::{OverflowingMul, OverflowingAdd}, Bounded, One, WrappingSub,
 };
-use rand::RngCore;
+use rand::{CryptoRng, RngCore};
 
 use crate::{magnitude::HasMagnitude, widening::Widening};
 
-pub trait RandomNumberGenerator: RngCore {
+pub trait RandomNumberGenerator: RngCore + CryptoRng {
     /// Returns a vector of random bytes of the given size.
     fn random_data(&mut self, size: usize) -> Vec<u8> {
         let mut data = vec![0; size];
