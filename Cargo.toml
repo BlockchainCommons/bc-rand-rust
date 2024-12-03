@@ -4,12 +4,12 @@ version = "0.2.1"
 edition = "2021"
 description = "Blockchain Commons Random Number Utilities."
 authors = ["Blockchain Commons"]
-keywords = ["random", "testing", "security"]
 repository = "https://github.com/BlockchainCommons/bc-rand-rust"
 readme = "README.md"
 license = "BSD-2-Clause-Patent"
-categories = ["algorithms"]
 documentation = "https://docs.rs/bc-rand"
+keywords = ["random", "testing", "security"] # Up to five
+categories = ["algorithms"] # https://crates.io/category_slugs
 
 [dependencies]
 rand = "^0.8.5"
