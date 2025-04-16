@@ -138,6 +138,20 @@ pub fn rng_next_in_closed_range<T>(rng: &mut impl RandomNumberGenerator, range: 
     lower_bound + T::from_magnitude(random)
 }
 
+pub fn rng_random_array<const N: usize>(rng: &mut impl RandomNumberGenerator) -> [u8; N] {
+    let mut data = [0u8; N];
+    rng.fill_random_data(&mut data);
+    data
+}
+
+pub fn rng_random_bool(rng: &mut impl RandomNumberGenerator) -> bool {
+    rng.next_u32() % 2 == 0
+}
+
+pub fn rng_random_u32(rng: &mut impl RandomNumberGenerator) -> u32 {
+    rng.next_u32()
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{make_fake_random_number_generator, rng_next_in_closed_range};

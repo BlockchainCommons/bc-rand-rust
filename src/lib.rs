@@ -23,6 +23,7 @@ mod magnitude;
 mod widening;
 
 mod random_number_generator;
+use rand::RngCore;
 pub use random_number_generator::{
     RandomNumberGenerator,
     rng_next_with_upper_bound,
@@ -30,6 +31,9 @@ pub use random_number_generator::{
     rng_next_in_closed_range,
     rng_random_data,
     rng_fill_random_data,
+    rng_random_array,
+    rng_random_bool,
+    rng_random_u32,
 };
 
 mod secure_random;
@@ -45,6 +49,22 @@ pub use seeded_random::{
     fake_random_data,
     make_fake_random_number_generator
 };
+
+impl RandomNumberGenerator for rand::rngs::ThreadRng {
+    fn random_data(&mut self, size: usize) -> Vec<u8> {
+        let mut data = vec![0u8; size];
+        self.fill_random_data(&mut data);
+        data
+    }
+
+    fn fill_random_data(&mut self, data: &mut [u8]) {
+        self.fill_bytes(data);
+    }
+}
+
+pub fn thread_rng() -> rand::rngs::ThreadRng {
+    rand::thread_rng()
+}
 
 #[cfg(test)]
 mod tests {
