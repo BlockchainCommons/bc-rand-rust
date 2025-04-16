@@ -1,6 +1,6 @@
 [package]
 name = "bc-rand"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 description = "Blockchain Commons Random Number Utilities."
 authors = ["Blockchain Commons"]
@@ -8,8 +8,8 @@ repository = "https://github.com/BlockchainCommons/bc-rand-rust"
 readme = "README.md"
 license = "BSD-2-Clause-Patent"
 documentation = "https://docs.rs/bc-rand"
-keywords = ["random", "testing", "security"] # Up to five
-categories = ["algorithms"] # https://crates.io/category_slugs
+keywords = ["random", "testing", "security"]                     # Up to five
+categories = ["algorithms"]                                      # https://crates.io/category_slugs
 
 [dependencies]
 rand = "^0.8.5"
