@@ -23,7 +23,7 @@ The crate also includes several convenience functions for generating secure and 
 
 ```toml
 [dependencies]
-bc-rand = "0.3.0"
+bc-rand = "0.4.0"
 ```
 
 ## Status - Community Review

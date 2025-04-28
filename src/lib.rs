@@ -1,4 +1,4 @@
-#![doc(html_root_url = "https://docs.rs/bc-rand/0.3.0")]
+#![doc(html_root_url = "https://docs.rs/bc-rand/0.4.0")]
 #![warn(rust_2018_idioms)]
 
 //! # Blockchain Commons Random Number Utilities
@@ -25,16 +25,25 @@ mod widening;
 mod random_number_generator;
 use rand::RngCore;
 pub use random_number_generator::{
-    rng_fill_random_data, rng_next_in_closed_range, rng_next_in_range, rng_next_with_upper_bound,
-    rng_random_array, rng_random_bool, rng_random_data, rng_random_u32, RandomNumberGenerator,
+    rng_fill_random_data,
+    rng_next_in_closed_range,
+    rng_next_in_range,
+    rng_next_with_upper_bound,
+    rng_random_array,
+    rng_random_bool,
+    rng_random_data,
+    rng_random_u32,
+    RandomNumberGenerator,
 };
 
 mod secure_random;
-pub use secure_random::{fill_random_data, random_data, SecureRandomNumberGenerator};
+pub use secure_random::{ fill_random_data, random_data, SecureRandomNumberGenerator };
 
 mod seeded_random;
 pub use seeded_random::{
-    fake_random_data, make_fake_random_number_generator, SeededRandomNumberGenerator,
+    fake_random_data,
+    make_fake_random_number_generator,
+    SeededRandomNumberGenerator,
 };
 
 impl RandomNumberGenerator for rand::rngs::ThreadRng {
