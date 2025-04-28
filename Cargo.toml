@@ -1,7 +1,7 @@
 [package]
 name = "bc-rand"
 version = "0.3.0"
-edition = "2021"
+edition = "2024"
 description = "Blockchain Commons Random Number Utilities."
 authors = ["Blockchain Commons"]
 repository = "https://github.com/BlockchainCommons/bc-rand-rust"
