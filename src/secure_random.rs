@@ -1,6 +1,5 @@
 use std::sync::Once;
 use rand::{rngs::StdRng, CryptoRng, RngCore, SeedableRng};
-use getrandom::getrandom;
 
 use crate::RandomNumberGenerator;
 
@@ -21,7 +20,7 @@ impl LazyStdRng {
     fn get_rng(&self) -> std::sync::MutexGuard<'_, Option<StdRng>> {
         self.init.call_once(|| {
             let mut seed = [0u8; 32];
-            getrandom(&mut seed).expect("Failed to seed RNG");
+            getrandom::fill(&mut seed).expect("Failed to seed RNG");
             let rng = StdRng::from_seed(seed);
 
             let mut guard = self.rng.lock().expect("Mutex was poisoned");
@@ -74,11 +73,6 @@ impl RngCore for SecureRandomNumberGenerator {
 
     fn fill_bytes(&mut self, dest: &mut [u8]) {
         fill_random_data(dest);
-    }
-
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand::Error> {
-        self.fill_bytes(dest);
-        Ok(())
     }
 }
 
