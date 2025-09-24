@@ -10,9 +10,10 @@ macro_rules! private_widening_impl {
     };
 }
 
-
 pub trait Widening {
-    fn wide_mul(self, other: Self) -> (Self, Self) where Self: Sized;
+    fn wide_mul(self, other: Self) -> (Self, Self)
+    where
+        Self: Sized;
 }
 
 impl Widening for u8 {

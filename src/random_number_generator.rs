@@ -1,7 +1,9 @@
-use std::ops::{Shl, Shr, Range, RangeInclusive};
+use std::ops::{Range, RangeInclusive, Shl, Shr};
+
 use num_traits::{
+    Bounded, One, PrimInt, Unsigned, WrappingSub,
     cast::{AsPrimitive, FromPrimitive, NumCast},
-    PrimInt, Unsigned, ops::overflowing::{OverflowingMul, OverflowingAdd}, Bounded, One, WrappingSub,
+    ops::overflowing::{OverflowingAdd, OverflowingMul},
 };
 use rand::{CryptoRng, RngCore};
 
@@ -15,20 +17,24 @@ pub trait RandomNumberGenerator: RngCore + CryptoRng {
         data
     }
 
-    fn fill_random_data(&mut self, data: &mut [u8]) {
-        self.fill_bytes(data);
-    }
+    fn fill_random_data(&mut self, data: &mut [u8]) { self.fill_bytes(data); }
 }
 
 /// Returns a vector of random bytes of the given size.
-pub fn rng_random_data(rng: &mut impl RandomNumberGenerator, size: usize) -> Vec<u8> {
+pub fn rng_random_data(
+    rng: &mut impl RandomNumberGenerator,
+    size: usize,
+) -> Vec<u8> {
     let mut data = vec![0; size];
     rng.fill_random_data(&mut data);
     data
 }
 
 /// Fills the given slice with random bytes.
-pub fn rng_fill_random_data(rng: &mut impl RandomNumberGenerator, data: &mut [u8]) {
+pub fn rng_fill_random_data(
+    rng: &mut impl RandomNumberGenerator,
+    data: &mut [u8],
+) {
     rng.fill_random_data(data);
 }
 
@@ -41,21 +47,24 @@ pub fn rng_fill_random_data(rng: &mut impl RandomNumberGenerator, data: &mut [u8
 ///
 /// - Parameter upperBound: The upper bound for the randomly generated value.
 ///   Must be non-zero.
-/// - Returns: A random value of `T` in the range `0..<upperBound`. Every
-///   value in the range `0..<upperBound` is equally likely to be returned.
-pub fn rng_next_with_upper_bound<T>(rng: &mut impl RandomNumberGenerator, upper_bound: T) -> T
-    where
-        T: PrimInt
-            + Unsigned
-            + NumCast
-            + FromPrimitive
-            + AsPrimitive<u128>
-            + OverflowingMul
-            + Shl<usize, Output = T>
-            + Shr<usize, Output = T>
-            + WrappingSub
-            + OverflowingAdd
-            + Widening
+/// - Returns: A random value of `T` in the range `0..<upperBound`. Every value
+///   in the range `0..<upperBound` is equally likely to be returned.
+pub fn rng_next_with_upper_bound<T>(
+    rng: &mut impl RandomNumberGenerator,
+    upper_bound: T,
+) -> T
+where
+    T: PrimInt
+        + Unsigned
+        + NumCast
+        + FromPrimitive
+        + AsPrimitive<u128>
+        + OverflowingMul
+        + Shl<usize, Output = T>
+        + Shr<usize, Output = T>
+        + WrappingSub
+        + OverflowingAdd
+        + Widening,
 {
     assert!(upper_bound != T::zero());
 
@@ -86,18 +95,22 @@ pub fn rng_next_with_upper_bound<T>(rng: &mut impl RandomNumberGenerator, upper_
 ///
 /// - Parameters:
 ///   - range: The range in which to create a random value.
-///   - generator: The random number generator to use when creating the
-///     new random value.
+///   - generator: The random number generator to use when creating the new
+///     random value.
 /// - Returns: A random value within the bounds of `range`.
-pub fn rng_next_in_range<T>(rng: &mut impl RandomNumberGenerator, range: &Range<T>) -> T
-    where T: PrimInt
+pub fn rng_next_in_range<T>(
+    rng: &mut impl RandomNumberGenerator,
+    range: &Range<T>,
+) -> T
+where
+    T: PrimInt
         + FromPrimitive
         + AsPrimitive<u128>
         + OverflowingMul
         + Shl<usize, Output = T>
         + Shr<usize, Output = T>
         + HasMagnitude
-        + OverflowingAdd
+        + OverflowingAdd,
 {
     let lower_bound = range.start;
     let upper_bound = range.end;
@@ -114,14 +127,18 @@ pub fn rng_next_in_range<T>(rng: &mut impl RandomNumberGenerator, range: &Range<
     lower_bound + T::from_magnitude(random)
 }
 
-pub fn rng_next_in_closed_range<T>(rng: &mut impl RandomNumberGenerator, range: &RangeInclusive<T>) -> T
-    where T: PrimInt
+pub fn rng_next_in_closed_range<T>(
+    rng: &mut impl RandomNumberGenerator,
+    range: &RangeInclusive<T>,
+) -> T
+where
+    T: PrimInt
         + FromPrimitive
         + AsPrimitive<u128>
         + OverflowingMul
         + Shl<usize, Output = T>
         + Shr<usize, Output = T>
-        + HasMagnitude
+        + HasMagnitude,
 {
     let lower_bound = *range.start();
     let upper_bound = *range.end();
@@ -138,7 +155,9 @@ pub fn rng_next_in_closed_range<T>(rng: &mut impl RandomNumberGenerator, range: 
     lower_bound + T::from_magnitude(random)
 }
 
-pub fn rng_random_array<const N: usize>(rng: &mut impl RandomNumberGenerator) -> [u8; N] {
+pub fn rng_random_array<const N: usize>(
+    rng: &mut impl RandomNumberGenerator,
+) -> [u8; N] {
     let mut data = [0u8; N];
     rng.fill_random_data(&mut data);
     data
@@ -159,7 +178,12 @@ mod tests {
     #[test]
     fn test_fake_numbers() {
         let mut rng = make_fake_random_number_generator();
-        let array = (0..100).map(|_| rng_next_in_closed_range(&mut rng, &(-50..=50))).collect::<Vec<_>>();
-        assert_eq!(format!("{:?}", array), "[-43, -6, 43, -34, -34, 17, -9, 24, 17, -29, -32, -44, 12, -15, -46, 20, 50, -31, -50, 36, -28, -23, 6, -27, -31, -45, -27, 26, 31, -23, 24, 19, -32, 43, -18, -17, 6, -13, -1, -27, 4, -48, -4, -44, -6, 17, -15, 22, 15, 20, -25, -35, -33, -27, -17, -44, -27, 15, -14, -38, -29, -12, 8, 43, 49, -42, -11, -1, -42, -26, -25, 22, -13, 14, 42, -29, -38, 17, 2, 5, 5, -31, 27, -3, 39, -12, 42, 46, -17, -25, -46, -19, 16, 2, -45, 41, 12, -22, 43, -11]");
+        let array = (0..100)
+            .map(|_| rng_next_in_closed_range(&mut rng, &(-50..=50)))
+            .collect::<Vec<_>>();
+        assert_eq!(
+            format!("{:?}", array),
+            "[-43, -6, 43, -34, -34, 17, -9, 24, 17, -29, -32, -44, 12, -15, -46, 20, 50, -31, -50, 36, -28, -23, 6, -27, -31, -45, -27, 26, 31, -23, 24, 19, -32, 43, -18, -17, 6, -13, -1, -27, 4, -48, -4, -44, -6, 17, -15, 22, 15, 20, -25, -35, -33, -27, -17, -44, -27, 15, -14, -38, -29, -12, 8, 43, 49, -42, -11, -1, -42, -26, -25, 22, -13, 14, 42, -29, -38, 17, 2, 5, 5, -31, 27, -3, 39, -12, 42, 46, -17, -25, -46, -19, 16, 2, -45, 41, 12, -22, 43, -11]"
+        );
     }
 }

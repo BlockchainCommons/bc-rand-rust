@@ -1,19 +1,23 @@
 use std::ops::{Shl, Shr};
-use num_traits::{PrimInt, Unsigned, FromPrimitive, AsPrimitive, ops::overflowing::{OverflowingMul, OverflowingAdd}, WrappingSub};
+
+use num_traits::{
+    AsPrimitive, FromPrimitive, PrimInt, Unsigned, WrappingSub,
+    ops::overflowing::{OverflowingAdd, OverflowingMul},
+};
 
 use crate::widening::Widening;
 
 pub trait HasMagnitude {
     type Magnitude: PrimInt
-    + Unsigned
-    + FromPrimitive
-    + AsPrimitive<u128>
-    + OverflowingMul
-    + Shl<u32, Output = Self::Magnitude>
-    + Shr<u32, Output = Self::Magnitude>
-    + WrappingSub
-    + OverflowingAdd
-    + Widening;
+        + Unsigned
+        + FromPrimitive
+        + AsPrimitive<u128>
+        + OverflowingMul
+        + Shl<u32, Output = Self::Magnitude>
+        + Shr<u32, Output = Self::Magnitude>
+        + WrappingSub
+        + OverflowingAdd
+        + Widening;
 
     fn to_magnitude(&self) -> Self::Magnitude;
     fn from_magnitude(magnitude: Self::Magnitude) -> Self;

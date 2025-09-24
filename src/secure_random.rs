@@ -1,6 +1,7 @@
 use std::sync::Once;
-use rand::{rngs::StdRng, CryptoRng, RngCore, SeedableRng};
+
 use getrandom::getrandom;
+use rand::{CryptoRng, RngCore, SeedableRng, rngs::StdRng};
 
 use crate::RandomNumberGenerator;
 
@@ -36,7 +37,8 @@ lazy_static::lazy_static! {
     static ref LAZY_RNG: LazyStdRng = LazyStdRng::new();
 }
 
-/// Generate a vector of cryptographically strong random bytes of the given size.
+/// Generate a vector of cryptographically strong random bytes of the given
+/// size.
 pub fn random_data(size: usize) -> Vec<u8> {
     let mut rng_guard = LAZY_RNG.get_rng();
     let rng = rng_guard.as_mut().expect("RNG was not initialized");
@@ -58,23 +60,17 @@ pub fn next_u64() -> u64 {
     rng.next_u64()
 }
 
-/// A random number generator that can be used as a source of cryptographically-strong
-/// randomness.
+/// A random number generator that can be used as a source of
+/// cryptographically-strong randomness.
 #[derive(Debug, Clone)]
 pub struct SecureRandomNumberGenerator;
 
 impl RngCore for SecureRandomNumberGenerator {
-    fn next_u32(&mut self) -> u32 {
-        next_u64() as u32
-    }
+    fn next_u32(&mut self) -> u32 { next_u64() as u32 }
 
-    fn next_u64(&mut self) -> u64 {
-        next_u64()
-    }
+    fn next_u64(&mut self) -> u64 { next_u64() }
 
-    fn fill_bytes(&mut self, dest: &mut [u8]) {
-        fill_random_data(dest);
-    }
+    fn fill_bytes(&mut self, dest: &mut [u8]) { fill_random_data(dest); }
 
     fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand::Error> {
         self.fill_bytes(dest);
@@ -85,13 +81,9 @@ impl RngCore for SecureRandomNumberGenerator {
 impl CryptoRng for SecureRandomNumberGenerator {}
 
 impl RandomNumberGenerator for SecureRandomNumberGenerator {
-    fn random_data(&mut self, size: usize) -> Vec<u8> {
-        random_data(size)
-    }
+    fn random_data(&mut self, size: usize) -> Vec<u8> { random_data(size) }
 
-    fn fill_random_data(&mut self, data: &mut [u8]) {
-        fill_random_data(data);
-    }
+    fn fill_random_data(&mut self, data: &mut [u8]) { fill_random_data(data); }
 }
 
 #[cfg(test)]
