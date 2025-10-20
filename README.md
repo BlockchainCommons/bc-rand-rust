@@ -34,6 +34,11 @@ Because this library is still in a community review stage, it should not be used
 
 See [Blockchain Commons' Development Phases](https://github.com/BlockchainCommons/Community/blob/master/release-path.md).
 
+## Version History
+
+### 0.4.1 - October 19, 2025
+  - Format.
+
 ## Financial Support
 
 `bc-rand` is a project of [Blockchain Commons](https://www.blockchaincommons.com/). We are proudly a "not-for-profit" social benefit corporation committed to open source & open development. Our work is funded entirely by donations and collaborative partnerships with people like you. Every contribution will be spent on building open tools, technologies, and techniques that sustain and advance blockchain and internet security infrastructure and promote an open web.
