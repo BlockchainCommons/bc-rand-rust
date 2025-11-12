@@ -164,7 +164,7 @@ pub fn rng_random_array<const N: usize>(
 }
 
 pub fn rng_random_bool(rng: &mut impl RandomNumberGenerator) -> bool {
-    rng.next_u32() % 2 == 0
+    rng.next_u32().is_multiple_of(2)
 }
 
 pub fn rng_random_u32(rng: &mut impl RandomNumberGenerator) -> u32 {
