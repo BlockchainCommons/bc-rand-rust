@@ -23,7 +23,7 @@ The crate also includes several convenience functions for generating secure and 
 
 ```toml
 [dependencies]
-bc-rand = "0.4.1"
+bc-rand = "0.4.2"
 ```
 
 ## Status - Community Review
@@ -35,6 +35,9 @@ Because this library is still in a community review stage, it should not be used
 See [Blockchain Commons' Development Phases](https://github.com/BlockchainCommons/Community/blob/master/release-path.md).
 
 ## Version History
+
+### 0.4.2 - November 12, 2025
+  - Use is_multiple_of method.
 
 ### 0.4.1 - October 19, 2025
   - Format.
