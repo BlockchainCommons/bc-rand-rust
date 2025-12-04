@@ -51,7 +51,7 @@ impl RandomNumberGenerator for rand::rngs::ThreadRng {
     fn fill_random_data(&mut self, data: &mut [u8]) { self.fill_bytes(data); }
 }
 
-pub fn thread_rng() -> rand::rngs::ThreadRng { rand::thread_rng() }
+pub fn thread_rng() -> rand::rngs::ThreadRng { rand::rng() }
 
 #[cfg(test)]
 mod tests {

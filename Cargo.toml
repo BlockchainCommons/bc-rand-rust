@@ -12,13 +12,13 @@ keywords = ["random", "testing", "security"]                     # Up to five
 categories = ["algorithms"]                                      # https://crates.io/category_slugs
 
 [dependencies]
-rand = "^0.8.5"
-rand_core = "0.6.4"
-getrandom = "^0.2.9"
-rand_xoshiro = "^0.6.0"
+rand = "^0.9.2"
+rand_core = "0.9.3"
+getrandom = "^0.3.4"
+rand_xoshiro = "^0.7.0"
 num-traits = "^0.2.15"
 lazy_static = "^1.4.0"
 
 [dev-dependencies]
-hex-literal = "^0.4.1"
+hex-literal = "^1.1.0"
 version-sync = "^0.9"
