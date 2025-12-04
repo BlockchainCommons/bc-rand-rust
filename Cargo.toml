@@ -13,7 +13,7 @@ categories = ["algorithms"]                                      # https://crate
 
 [dependencies]
 rand = "^0.9.2"
-rand_core = "0.9.3"
+rand_core = "^0.9.3"
 getrandom = "^0.3.4"
 rand_xoshiro = "^0.7.0"
 num-traits = "^0.2.15"

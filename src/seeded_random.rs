@@ -58,7 +58,7 @@ impl RandomNumberGenerator for SeededRandomNumberGenerator {
 }
 
 /// Creates a seeded random number generator with a fixed seed.
-pub fn make_fake_random_number_generator() -> impl RandomNumberGenerator {
+pub fn make_fake_random_number_generator() -> SeededRandomNumberGenerator {
     SeededRandomNumberGenerator::new([
         17295166580085024720,
         422929670265678780,
