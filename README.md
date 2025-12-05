@@ -23,7 +23,7 @@ The crate also includes several convenience functions for generating secure and 
 
 ```toml
 [dependencies]
-bc-rand = "0.4.2"
+bc-rand = "0.5.0"
 ```
 
 ## Status - Community Review
@@ -35,6 +35,11 @@ Because this library is still in a community review stage, it should not be used
 See [Blockchain Commons' Development Phases](https://github.com/BlockchainCommons/Community/blob/master/release-path.md).
 
 ## Version History
+
+### 0.5.0 - December 4, 2025
+- Updated to rand 0.9, rand_core 0.9, getrandom 0.3, rand_xoshiro 0.7.
+- Adapted to breaking API changes in rand ecosystem.
+- `make_fake_random_number_generator()` now returns `SeededRandomNumberGenerator` concrete type.
 
 ### 0.4.2 - November 12, 2025
   - Use is_multiple_of method.

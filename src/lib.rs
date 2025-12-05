@@ -1,4 +1,4 @@
-#![doc(html_root_url = "https://docs.rs/bc-rand/0.4.2")]
+#![doc(html_root_url = "https://docs.rs/bc-rand/0.5.0")]
 #![warn(rust_2018_idioms)]
 
 //! # Blockchain Commons Random Number Utilities
